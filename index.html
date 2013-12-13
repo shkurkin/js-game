@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<head>
+  <title>Game</title>
+</head>
+<body id="body">
+</body>
+<script src="jquery-2.0.3.js" type="text/javascript"></script>
+<script>
+
+var sprites = {"frames": {
+
+"bike.png":
+{
+  "frame": {"x":29,"y":29,"w":25,"h":25},
+  "rotated": false,
+  "trimmed": false,
+  "spriteSourceSize": {"x":0,"y":0,"w":25,"h":25},
+  "sourceSize": {"w":25,"h":25}
+},
+"building.png":
+{
+  "frame": {"x":29,"y":2,"w":25,"h":25},
+  "rotated": false,
+  "trimmed": false,
+  "spriteSourceSize": {"x":0,"y":0,"w":25,"h":25},
+  "sourceSize": {"w":25,"h":25}
+},
+"chair.png":
+{
+  "frame": {"x":2,"y":29,"w":25,"h":25},
+  "rotated": false,
+  "trimmed": false,
+  "spriteSourceSize": {"x":0,"y":0,"w":25,"h":25},
+  "sourceSize": {"w":25,"h":25}
+},
+"plane.png":
+{
+  "frame": {"x":2,"y":2,"w":25,"h":25},
+  "rotated": false,
+  "trimmed": false,
+  "spriteSourceSize": {"x":0,"y":0,"w":25,"h":25},
+  "sourceSize": {"w":25,"h":25}
+}},
+"meta": {
+  "app": "http://www.codeandweb.com/texturepacker ",
+  "version": "1.0",
+  "image": "sprite_icons.png",
+  "format": "RGBA8888",
+  "size": {"w":64,"h":64},
+  "scale": "1",
+  "smartupdate": "$TexturePacker:SmartUpdate:55b741bc519ba6002d696b2da395c80b:32d25c05ab7ed2b2c13d3cc021b2468b:2498b88767bf60369b6df49f885d69d2$"
+}
+};
+
+var canvas = null;
+var context = null;
+var frame = 0;
+var frames = [];
+
+var atlas = new Image();
+atlas.src = "sprite_icons.png";
+
+var prep_spr = {}
+
+function drawSprite(spritename, posx, posy){
+  var select = prep_spr[spritename];
+  console.log(select);
+  context.drawImage(atlas, select.x, select.y, select.w,
+                    select.h, posx + select.cx, posy + select.cy, 
+                    select.w, select.h);
+};
+
+var prepSprite = function(all_sprites){
+  for(var s in all_sprites.frames){
+    var each = all_sprites.frames[s].frame;
+    var cx = -each.w * 0.5;
+    var cy = -each.h * 0.5;
+    defSprite(s, each.x, each.y, each.w, each.y, cx, cy);
+  }
+}
+
+var defSprite = function(name, x, y, w, h, cx, cy){
+  var spt = {
+    "id": name,
+    "x": x,
+    "y": y,
+    "w": w,
+    "h": h,
+    "cx": cx == null ? 0 : cx,
+    "cy": cy == null ? 0 : cy
+  };
+  prep_spr[name] = spt;
+};
+
+var setup = function() {
+  var body = document.getElementById("body");
+  canvas = document.createElement("canvas");
+
+  context = canvas.getContext("2d");
+
+  canvas.setAttribute('width', 500);
+  canvas.setAttribute('height', 700);
+
+  body.appendChild(canvas);
+
+  prepSprite(sprites);
+
+};   
+
+setup();
+
+atlas.onload = function(){
+  drawSprite("bike.png", 20, 20);
+  drawSprite("building.png", 80, 80);
+}
+
+</script>
+</html>
